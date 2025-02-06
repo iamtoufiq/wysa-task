@@ -9,10 +9,11 @@ import {
 } from "@mui/material";
 import { useStore } from "../store/store";
 import { useEffect, useState } from "react";
+import { BaseURL } from "../api";
 
 const fetchUsers = async (page = 1, search = "") => {
   const res = await fetch(
-    `https://dummyjson.com/users/search?q=${search}&limit=10&skip=${
+    `${BaseURL}/users/search?q=${search}&limit=10&skip=${
       (page - 1) * 10
     }`
   );

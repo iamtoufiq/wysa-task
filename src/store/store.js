@@ -3,7 +3,7 @@ import { create } from "zustand";
 export const useStore = create((set) => ({
 //app setting
 loader: false,
-drawerOpen: false, // New state for drawer
+drawerOpen: false,
 toggleDrawer: (isOpen) =>
   set((state) => ({
     drawerOpen: isOpen !== undefined ? isOpen : !state.drawerOpen,
@@ -21,16 +21,27 @@ setLoader: (value) => {
 
 //users
 userDetails:[],
- // Function to add user details
  addUserDetails: (user) => {
   set((state) => ({
     userDetails: user,
   }));
 },
-
   // Todos
   todos: [],
-  setTodos: (todos) => set({ todos }), // Set todos from API
+  // setTodos: (todos) => set({ todos }), // Set todos from API
+  setTodos: (todos) => {
+    set((state) => ({
+      todos: [
+        ...state.todos, // Keep existing todos
+        ...todos.filter(
+          (newTodo) => !state.todos.some((existingTodo) => existingTodo.id === newTodo.id)
+        ), // Add only new todos that don’t exist in state
+      ],
+    }));
+  },
+
+
+
   addTodo: (todo) => {
     set((state) => ({
       todos: [

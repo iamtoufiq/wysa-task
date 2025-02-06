@@ -24,6 +24,7 @@ import {
 import { useStore } from "../store/store";
 import { useEffect, useState } from "react";
 import LoadingText from "./LoadingText";
+import { BaseURL } from "../api";
 
 const TodoTab = () => {
   const {setLoader, selectedUser, todos, setTodos, addTodo, removeTodo, completeTodo,updateTodo } = useStore();
@@ -43,30 +44,24 @@ console.log("todos",todos);
   const {  isLoading, isFetching } = useQuery({
     queryKey: ["todos", selectedUser],
     queryFn: async () => {
-      const response = await fetch(`https://dummyjson.com/todos/user/${selectedUser}`);
+      const response = await fetch(`${BaseURL}/todos/user/${selectedUser}`);
       if (!response.ok) throw new Error("Failed to fetch todos");
       const result = await response.json();
       setTodos(result.todos);
       return result.todos;
     },
-    // enabled: !!selectedUser,
-    // staleTime: Infinity,
-    // cacheTime: Infinity,
-    // refetchOnWindowFocus: false,
-    // refetchOnReconnect: false,
-    // refetchOnMount: false,
-    enabled: !!selectedUser,  // only run the query if selectedUser is truthy
-    staleTime: 0,             // data is considered stale immediately
-    cacheTime: 0,             // cache the data for 0ms, meaning no caching
-    refetchOnWindowFocus: true, // refetch the data when the window is focused
-    refetchOnReconnect: true,  // refetch the data when the network reconnects
+    enabled: !!selectedUser,
+    staleTime: 0,
+    cacheTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
     refetchOnMount: false,
   });
 
   // Add Todo Mutation
   const addMutation = useMutation({
     mutationFn: async () => {
-      const response = await fetch("https://dummyjson.com/todos/add", {
+      const response = await fetch(`${BaseURL}/todos/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -79,9 +74,9 @@ console.log("todos",todos);
       return response.json();
     },
     onSuccess: (newTodoData) => {
+      debugger
       addTodo({
         ...newTodoData,
-        id: Math.random(), // Temporary ID if API doesn’t return one
       });
       showSnackbar("Todo added successfully!", "success");
       setNewTodo("");
@@ -91,11 +86,15 @@ console.log("todos",todos);
   // Delete Todo Mutation
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const response = await fetch(`https://dummyjson.com/todos/${id}`, { method: "DELETE" });
+      const response = await fetch(`${BaseURL}/todos/${id}`, { method: "DELETE" });
       if (!response.ok) throw new Error("Failed to delete todo");
       return response.json();
     },
     onSuccess: (_, id) => {
+      removeTodo(id);
+      showSnackbar("Todo deleted successfully!", "error");
+    },
+    onError: (_, id) => {
       removeTodo(id);
       showSnackbar("Todo deleted successfully!", "error");
     },
@@ -104,8 +103,7 @@ console.log("todos",todos);
   // Complete Todo Mutation
   const completeMutation = useMutation({
     mutationFn: async (id) => {
-      debugger
-      const response = await fetch(`https://dummyjson.com/todos/${id}`, {
+      const response = await fetch(`${BaseURL}/todos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ completed: true }),
@@ -116,13 +114,16 @@ console.log("todos",todos);
     onSuccess: (_, id) => {
       completeTodo(id);
     },
+    onError: (_, id) => {
+      completeTodo(id);
+    },
   });
 
   // Edit Todo Mutation
 // Edit Todo Mutation
 const editMutation = useMutation({
   mutationFn: async ({ id, updatedTodo }) => {
-    const response = await fetch(`https://dummyjson.com/todos/${id}`, {
+    const response = await fetch(`${BaseURL}/todos/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedTodo), // Pass updatedTodo as the request body
@@ -137,14 +138,10 @@ const editMutation = useMutation({
   },
 });
 
-
-
-
   const handleEditTodo = (todo) => {
     setEditTodo(todo);
     setEditText(todo.todo);
   };
-
 
   const handleSaveEdit = () => {
     if (editText.trim() !== editTodo.todo) {
@@ -164,12 +161,7 @@ useEffect(()=>{
   }
 },[isFetching, isLoading, setLoader])
 
-console.log("todos",todos)
-
-// if(!isLoading && !isFetching && todos.length===0){
-// return <div>No data</div>
-// }
-console.log("todos",todos)
+console.log("todos",todos);
   return (
     <div>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 2 }}>
@@ -199,11 +191,12 @@ console.log("todos",todos)
         </Stack>
       </Box>
 {
-  !isLoading && !isFetching && todos.length===0 ?  <div>No data</div> :  <List>
+  !isLoading && !isFetching && todos.filter((todo) => todo.userId === selectedUser).length === 0 ?  <div>No data</div> :  <List>
   {isLoading || isFetching ? (
      <LoadingText/>
   ) : (
-    todos?.map((todo) => (
+    todos
+    .filter((todo) => todo.userId === selectedUser)?.map((todo) => (
       <ListItem
         key={todo.id}
         sx={{
@@ -228,6 +221,9 @@ console.log("todos",todos)
           console.log("asfdasdfasdfa", todo)
         }
         {/* Checkbox for marking as completed */}
+        {
+          console.log("value is ", todo)
+        }
         <Checkbox
           checked={todo.completed}
           onChange={() => completeMutation.mutate(todo.id)}

@@ -11,6 +11,7 @@ import UserPersonalInfor from "./UserPersonalInfor";
 import UserAddress from "./UserAddress";
 import UserCompanyDetails from "./UserCompanyDetails";
 import UserTopProfile from "./UserTopProfile";
+import { BaseURL } from "../api";
 
 const UserDetailsTab = () => {
   const { selectedUser, addUserDetails, setLoader } = useStore();
@@ -26,7 +27,7 @@ const UserDetailsTab = () => {
     queryKey: ["user", selectedUser],
     queryFn: async () => {
       const response = await fetch(
-        `https://dummyjson.com/users/${selectedUser ?? 1}`
+        `${BaseURL}/users/${selectedUser ?? 1}`
       );
       if (!response.ok) throw new Error("Failed to fetch user data");
       let data = await response.json();

@@ -33,7 +33,7 @@ export default function App() {
                 position: 'absolute',
                 top: 16,
                 left: 16,
-                zIndex: 1000, // Make sure the button is above the content
+                zIndex: 1000,
               }}
               onClick={() => toggleDrawer(!drawerOpen)}
             >

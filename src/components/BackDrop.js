@@ -10,7 +10,6 @@ const BackDrop = () => {
       <Backdrop
         sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
         open={loader}
-        //   onClick={handleClose}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
