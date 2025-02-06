@@ -241,7 +241,6 @@ console.log("todos",todos);
           </>
         }
       >
-        {/* Checkbox for marking as completed */}
         <Checkbox
         id="checkbox"
           checked={todo.completed}
