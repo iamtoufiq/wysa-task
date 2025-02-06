@@ -31,7 +31,6 @@ userDetails:[],
   // Todos
   todos: [],
   setTodos: (todos) => set({ todos }), // Set todos from API
-  // {"id":255,"todo":"asfdasf","completed":false,"userId":5}
   addTodo: (todo) => {
     set((state) => ({
       todos: [
