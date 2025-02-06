@@ -75,6 +75,7 @@ export default function App() {
       top: "10%",
       left: 0,
       width: "100%",
+      p:1
     }),
   }}>
             <Tabs id="asasdfasdfda" value={currentTab} onChange={(_, v) => setCurrentTab(v)}>

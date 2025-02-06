@@ -48,7 +48,7 @@ const UserDetailsTab = () => {
   if (!user) return null;
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 1 }}>
       <UserTopProfile user={user} />
       {/* Personal Info */}
       <UserPersonalInfor user={user} />

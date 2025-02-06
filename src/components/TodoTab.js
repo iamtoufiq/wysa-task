@@ -74,7 +74,6 @@ console.log("todos",todos);
       return response.json();
     },
     onSuccess: (newTodoData) => {
-      debugger
       addTodo({
         ...newTodoData,
       });
@@ -136,6 +135,12 @@ const editMutation = useMutation({
     showSnackbar("Todo updated successfully!", "success");
     setEditTodo(null);
   },
+  onError: (error, { id, updatedTodo }) => {
+    // updateTodo(id, todo:updatedTodo);
+    updateTodo(id, updatedTodo);
+    showSnackbar("Todo updated successfully!", "success");
+    setEditTodo(null);
+  },
 });
 
   const handleEditTodo = (todo) => {
@@ -151,6 +156,15 @@ const editMutation = useMutation({
           todo: editText,
         },
       });
+    }
+    else {
+      // If no changes, show a snackbar with the message "No changes done"
+      setSnackbar({
+        open: true,
+        message: "You didn't make any changes",
+        type: "red",
+      });
+      setEditTodo(null)
     }
   };
 useEffect(()=>{
@@ -217,13 +231,7 @@ console.log("todos",todos);
           </>
         }
       >
-        {
-          console.log("asfdasdfasdfa", todo)
-        }
         {/* Checkbox for marking as completed */}
-        {
-          console.log("value is ", todo)
-        }
         <Checkbox
           checked={todo.completed}
           onChange={() => completeMutation.mutate(todo.id)}
@@ -236,6 +244,7 @@ console.log("todos",todos);
               color: todo.completed ? "#888" : "inherit",
               transition: "all 0.3s ease-in-out",
               fontSize: "18px",
+              wordBreak:"break-word"
             }}
           >
             {todo.todo}
