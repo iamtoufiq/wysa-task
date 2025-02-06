@@ -7,7 +7,6 @@ import TodoTab from './components/TodoTab';
 import { useStore } from './store/store';
 import { theme } from './theme';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
 import BackDrop from './components/BackDrop';
 
 const queryClient = new QueryClient();
