@@ -212,20 +212,30 @@ console.log("todos",todos);
     todos
     .filter((todo) => todo.userId === selectedUser)?.map((todo) => (
       <ListItem
+      id="todo item"
         key={todo.id}
         sx={{
           border: "1px solid #ddd",
           boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.2)",
           borderRadius: "6px",
           marginBottom: "16px",
-          padding: "12px",
+          paddingInline: {
+            xs: "0px",  // For screen sizes less than 'md' (xs, sm)
+            md: "12px", // For 'md' and larger screens
+          },
         }}
         secondaryAction={
           <>
-            <IconButton disabled={todo?.completed} onClick={() => handleEditTodo(todo)}>
+            <IconButton sx={{
+    position: "relative",
+    right: {
+      xs: "-10px",     // For screen sizes less than 'sm' (xs, sm)
+      md: "0px",     // For 'md' and larger screens (i.e., medium and larger devices)
+    },
+  }} id="edit" disabled={todo?.completed} onClick={() => handleEditTodo(todo)}>
               <EditIcon />
             </IconButton>
-            <IconButton onClick={() => setDeleteConfirm({ open: true, userId: todo.id })}>
+            <IconButton id="delete" onClick={() => setDeleteConfirm({ open: true, userId: todo.id })}>
               <DeleteIcon />
             </IconButton>
           </>
@@ -233,6 +243,7 @@ console.log("todos",todos);
       >
         {/* Checkbox for marking as completed */}
         <Checkbox
+        id="checkbox"
           checked={todo.completed}
           onChange={() => completeMutation.mutate(todo.id)}
           sx={{ marginRight: "12px" }}
@@ -244,7 +255,8 @@ console.log("todos",todos);
               color: todo.completed ? "#888" : "inherit",
               transition: "all 0.3s ease-in-out",
               fontSize: "18px",
-              wordBreak:"break-word"
+              wordBreak:"break-word",
+              maxWidth:"80%"
             }}
           >
             {todo.todo}

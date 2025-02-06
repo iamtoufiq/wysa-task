@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.MuiButtonBase-root.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiCheckbox-sizeMedium.PrivateSwitchBase-root.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiCheckbox-sizeMedium.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiCheckbox-sizeMedium.css-1q9kdz8-MuiButtonBase-root-MuiCheckbox-root{
+margin-right: 0px;
+}
+
+
+.MuiListItemSecondaryAction-root.css-zezwi5-MuiListItemSecondaryAction-root{
+right: 0px !important;
+}
+
+@media (min-width: 768px) { /* for screens larger than 'md' */
+  .MuiButtonBase-root.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiCheckbox-sizeMedium.PrivateSwitchBase-root.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiCheckbox-sizeMedium.MuiCheckbox-root.MuiCheckbox-colorPrimary.MuiCheckbox-sizeMedium.css-1q9kdz8-MuiButtonBase-root-MuiCheckbox-root {
+    margin-right: 12px;
+  }
+  .MuiListItemSecondaryAction-root.css-zezwi5-MuiListItemSecondaryAction-root{
+    right: 12px !important;
+    }
+}
