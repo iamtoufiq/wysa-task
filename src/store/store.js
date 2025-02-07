@@ -69,16 +69,36 @@ userDetails:[],
   },
 
   // Update Todo
+  // updateTodo: (id, updatedTodo) => {
+
+  //   debugger
+  //   set((state) => ({
+  //     todos: state.todos.map((todo) =>
+  //       todo.id === id
+  //         ? {...todo,
+  //             ...updatedTodo,  // Merge the updated fields
+  //           }
+  //         : todo
+  //     ),
+  //   }));
+  // },
   updateTodo: (id, updatedTodo) => {
-    set((state) => ({
-      todos: state.todos.map((todo) =>
-        todo.id === id
-          ? {...todo,
-              ...updatedTodo,  // Merge the updated fields
-            }
-          : todo
-      ),
-    }));
+    set((state) => {
+      console.log("Current State:", state.todos); // Access the state
+      debugger;
+
+      return {
+        todos: state.todos.map((todo) =>
+          todo.id === id
+            ? {
+                ...todo,
+                ...updatedTodo, // Merge the updated fields
+                completed: false, // Ensure completed is always false
+              }
+            : todo
+        ),
+      };
+    });
   },
 
 

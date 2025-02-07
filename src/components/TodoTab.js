@@ -122,6 +122,7 @@ console.log("todos",todos);
 // Edit Todo Mutation
 const editMutation = useMutation({
   mutationFn: async ({ id, updatedTodo }) => {
+    debugger
     const response = await fetch(`${BaseURL}/todos/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -150,6 +151,7 @@ const editMutation = useMutation({
 
   const handleSaveEdit = () => {
     if (editText.trim() !== editTodo.todo) {
+      debugger
       editMutation.mutate({
         id: editTodo.id,  // The id
         updatedTodo: {
